@@ -179,8 +179,10 @@ fi
 
 if [ -d ~/Library/Application\ Support/Google/Chrome/ ]; then
   collect_paths ~/Library/Application\ Support/Google/Chrome/Default/Application\ Cache/*
-  msg 'Clearing Google Chrome Cache Files...'
-  remove_paths
+  if [ -z "$dry_run" ]; then
+    msg 'Clearing Google Chrome Cache Files...'
+    remove_paths
+  fi
 fi
 
 collect_paths ~/Music/iTunes/iTunes\ Media/Mobile\ Applications/*
@@ -216,15 +218,19 @@ fi
 # support deleting Dropbox Cache if they exist
 if [ -d "/Users/${HOST}/Dropbox" ]; then
   collect_paths ~/Dropbox/.dropbox.cache/*
-  msg 'Clearing Dropbox 📦 Cache Files...'
-  remove_paths
+  if [ -z "$dry_run" ]; then
+    msg 'Clearing Dropbox 📦 Cache Files...'
+    remove_paths
+  fi
 fi
 
 if [ -d ~/Library/Application\ Support/Google/DriveFS/ ]; then
   collect_paths ~/Library/Application\ Support/Google/DriveFS/[0-9a-zA-Z]*/content_cache
-  msg 'Clearing Google Drive File Stream Cache Files...'
-  killall "Google Drive File Stream"
-  remove_paths
+  if [ -z "$dry_run" ]; then
+    msg 'Clearing Google Drive File Stream Cache Files...'
+    killall "Google Drive File Stream"
+    remove_paths
+  fi
 fi
 
 if type "composer" &>/dev/null; then
@@ -245,8 +251,10 @@ if [ -d ~/Library/Application\ Support/Steam/ ]; then
   collect_paths ~/Library/Application\ Support/Steam/steamapps/shadercache
   collect_paths ~/Library/Application\ Support/Steam/steamapps/temp
   collect_paths ~/Library/Application\ Support/Steam/steamapps/download
-  msg 'Clearing Steam Cache, Log, and Temp Files...'
-  remove_paths
+  if [ -z "$dry_run" ]; then
+    msg 'Clearing Steam Cache, Log, and Temp Files...'
+    remove_paths
+  fi
 fi
 
 # Deletes Minecraft logs
@@ -262,8 +270,10 @@ if [ -d ~/Library/Application\ Support/minecraft ]; then
   if [ -d ~/Library/Application\ Support/minecraft/.mixin.out ]; then
     collect_paths ~/Library/Application\ Support/minecraft/.mixin.out
   fi
-  msg 'Clearing Minecraft Cache and Log Files...'
-  remove_paths
+  if [ -z "$dry_run" ]; then
+    msg 'Clearing Minecraft Cache and Log Files...'
+    remove_paths
+  fi
 fi
 
 # Deletes Lunar Client logs (Minecraft alternate client)
@@ -274,8 +284,10 @@ if [ -d ~/.lunarclient ]; then
   collect_paths ~/.lunarclient/logs
   collect_paths ~/.lunarclient/offline/*/logs
   collect_paths ~/.lunarclient/offline/files/*/logs
-  msg 'Deleting Lunar Client logs and caches...'
-  remove_paths
+  if [ -z "$dry_run" ]; then
+    msg 'Deleting Lunar Client logs and caches...'
+    remove_paths
+  fi
 fi
 
 # Deletes Wget logs
@@ -283,8 +295,10 @@ fi
 if [ -d ~/wget-log ]; then
   collect_paths ~/wget-log
   collect_paths ~/.wget-hsts
-  msg 'Deleting Wget log and hosts file...'
-  remove_paths
+  if [ -z "$dry_run" ]; then
+    msg 'Deleting Wget log and hosts file...'
+    remove_paths
+  fi
 fi
 
 # Deletes Cacher logs
@@ -292,32 +306,40 @@ fi
 # -Astro
 if [ -d ~/.cacher ]; then
   collect_paths ~/.cacher/logs
-  msg 'Deleting Cacher logs...'
-  remove_paths
+  if [ -z "$dry_run" ]; then
+    msg 'Deleting Cacher logs...'
+    remove_paths
+  fi
 fi
 
 # Deletes Android (studio?) cache
 # -Astro
 if [ -d ~/.android ]; then
   collect_paths ~/.android/cache
-  msg 'Deleting Android cache...'
-  remove_paths
+  if [ -z "$dry_run" ]; then
+    msg 'Deleting Android cache...'
+    remove_paths
+  fi
 fi
 
 # Clears Gradle caches
 # -Astro
 if [ -d ~/.gradle ]; then
   collect_paths ~/.gradle/caches
-  msg 'Clearing Gradle caches...'
-  remove_paths
+  if [ -z "$dry_run" ]; then
+    msg 'Clearing Gradle caches...'
+    remove_paths
+  fi
 fi
 
 # Deletes Kite Autocomplete logs
 # -Astro
 if [ -d ~/.kite ]; then
   collect_paths ~/.kite/logs
-  msg 'Deleting Kite logs...'
-  remove_paths
+  if [ -z "$dry_run" ]; then
+    msg 'Deleting Kite logs...'
+    remove_paths
+  fi
 fi
 
 if type "brew" &>/dev/null; then
@@ -333,8 +355,6 @@ if type "brew" &>/dev/null; then
     brew cleanup -s &>/dev/null
     remove_paths
     brew tap --repair &>/dev/null
-  else
-    remove_paths
   fi
 fi
 
